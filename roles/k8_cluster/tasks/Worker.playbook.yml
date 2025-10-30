@@ -1,0 +1,9 @@
+---
+- name: Save join token command as variable
+  ansible.builtin.set_fact:
+    k8_cluster_join_node: "{{ hostvars[groups['controlplane'][0]].k8_cluster_join_node_token.stdout_lines[0] }}"
+
+- name: Add worker nodes to cluster
+  ansible.builtin.command:
+    cmd: "sudo {{ k8_cluster_join_node }}"
+    creates: /etc/kubernetes/kubelet.conf

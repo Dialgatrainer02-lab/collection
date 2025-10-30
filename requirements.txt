@@ -1,0 +1,5 @@
+ansible
+argcomplete
+kubernetes
+jsonpatch
+ansible-creator

@@ -1,0 +1,59 @@
+---
+- name: Add IP to /etc/hosts ### for cluster dns resolution
+  ansible.builtin.lineinfile:
+    path: /etc/cloud/templates/hosts.redhat.tmpl
+    line: "{{ hostvars[item]['ansible_host'] }} {{ hostvars[item]['inventory_hostname'] }}"
+    state: present
+    backup: true
+  loop: "{{ groups['all'] }}"
+  notify:
+    - Restart kubelet
+
+- name: Add IPv6 to /etc/hosts ### for cluster dns resolution
+  ansible.builtin.lineinfile:
+    path: /etc/cloud/templates/hosts.redhat.tmpl
+    line: "{{ hostvars[item]['ipv6_address'] }} {{ hostvars[item]['inventory_hostname'] }}"
+    state: present
+    backup: true
+  loop: "{{ groups['all'] }}"
+
+- name: Ensure required packages are installed
+  ansible.builtin.dnf:
+    name:
+      - sudo
+      - dnf-plugins-core
+      - epel-release
+      - python3-pip
+    state: present
+    enablerepo:
+      - crb
+
+- name: Add Docker CE repository
+  ansible.builtin.copy:
+    src: docker-ce.repo
+    dest: /etc/yum.repos.d/docker-ce.repo
+    mode: "0755"
+
+
+- name: Add Kubernetes repository
+  ansible.builtin.template:
+    src: kubernetes.repo.j2
+    dest: /etc/yum.repos.d/kubernetes.repo
+    mode: "0755"
+
+- name: Ensure required packages are installed
+  ansible.builtin.dnf:
+    name:
+      - containerd.io
+      - kubectl
+      - kubelet
+      - kubeadm
+      - helm
+    state: present
+    disable_excludes: kubernetes
+
+- name: Install pre-requisites
+  ansible.builtin.pip:
+    name:
+      - pyyaml
+      - kubernetes
