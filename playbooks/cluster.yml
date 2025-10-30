@@ -1,0 +1,9 @@
+---
+- name: Create a cluster
+  hosts: '{{target|default("all")}}'
+  become: true
+  tasks:
+    - name: Make Cluster
+      ansible.builtin.import_role:
+        name: k8_cluster
+    # later to argo cd
