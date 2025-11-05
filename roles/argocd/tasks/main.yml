@@ -1,0 +1,26 @@
+---
+# install
+# add cluster
+# add applications
+
+
+- name: Install argocd
+  when: inventory_hostname == groups['controlplane'][0]
+  block:
+    - name: Add namespace
+      kubernetes.core.k8s:
+        name: argocd
+        api_version: v1
+        kind: Namespace
+        state: present
+    - name: Download argocd server manifest to the cluster.
+      ansible.builtin.get_url:
+        url: {{ argocd_install_url }}
+        dest: /tmp/argocd.yml
+        mode: '0664'
+    
+    - name: Apply argocd server manifest to the cluster.
+      kubernetes.core.k8s:
+        state: present
+        src: /tmp/argocd.yml
+        namespace: argocd

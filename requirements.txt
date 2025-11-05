@@ -2,4 +2,10 @@ ansible
 argcomplete
 kubernetes
 jsonpatch
-ansible-creator
+
+
+molecule
+molecule-plugins[vagrant]
+python-vagrant
+libvirt-python
+

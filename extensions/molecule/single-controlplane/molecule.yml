@@ -1,0 +1,12 @@
+---
+
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+platforms:
+  # Defaults to Alpine Linux in case no box details are provided
+  - name: Alma9
+    box: almalinux/9
+    memory: 2048
+    cpus: 2

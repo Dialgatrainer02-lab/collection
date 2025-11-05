@@ -87,3 +87,8 @@
         group: "{{ ansible_user }}"
         mode: "0755"
         state: hard
+    - name: Balance core dns pods
+      ansible.builtin.command:
+        cmd: kubectl -n kube-system rollout restart deployment coredns
+      register: k8_cluster_dns_balance
+      changed_when: k8_cluster_dns_balance.rc != 0
