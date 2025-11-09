@@ -15,10 +15,10 @@
         state: present
     - name: Download argocd server manifest to the cluster.
       ansible.builtin.get_url:
-        url: {{ argocd_install_url }}
+        url: "{{ argocd_install_url }}"
         dest: /tmp/argocd.yml
         mode: '0664'
-    
+
     - name: Apply argocd server manifest to the cluster.
       kubernetes.core.k8s:
         state: present

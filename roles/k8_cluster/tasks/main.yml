@@ -66,11 +66,15 @@
   ansible.builtin.include_tasks:
     file: Controlplane.playbook.yml
   when: "'controlplane' in group_names"
+  tags:
+    - controlplane
 
 - name: Worker specific steps
   ansible.builtin.include_tasks:
     file: Worker.playbook.yml
   when: "'worker' in group_names"
+  tags:
+    - workers
 
 - name: Get Cluster information
   kubernetes.core.k8s_cluster_info:

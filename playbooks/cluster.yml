@@ -5,5 +5,18 @@
   tasks:
     - name: Make Cluster
       ansible.builtin.import_role:
-        name: k8_cluster
+        name: dialgatrainer02_lab.kubernetes.k8_cluster
+      tags:
+        - cluster
+        - kubeconfig
+        - cni
+        - packages
+        - controlplane
+        - workers
+
     # later to argo cd
+    - name: Install argocd
+      ansible.builtin.import_role:
+        name: dialgatrainer02_lab.kubernetes.argocd
+      tags:
+        - argocd

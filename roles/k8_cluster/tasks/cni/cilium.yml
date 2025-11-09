@@ -1,5 +1,5 @@
 ---
-- name: Add stable chart repo
+- name: Add cillium chart repo
   kubernetes.core.helm_repository:
     name: cilium
     repo_url: https://helm.cilium.io/

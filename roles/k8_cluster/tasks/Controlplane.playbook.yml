@@ -13,32 +13,37 @@
         creates: /etc/kubernetes/admin.conf
       run_once: true
 
+    - name: Kubeconfig
+      tags:
+        - kubeconfig
+      block:
+        - name: Create ~/.kube directory
+          ansible.builtin.file:
+            path: /home/{{ ansible_user }}/.kube
+            state: directory
+            mode: "0755"
 
-    - name: Create ~/.kube directory
-      ansible.builtin.file:
-        path: /home/{{ ansible_user }}/.kube
-        state: directory
-        mode: "0755"
+        - name: Copy kubeconfig file
+          ansible.builtin.file:
+            src: /etc/kubernetes/admin.conf
+            dest: /home/{{ ansible_user }}/.kube/config
+            owner: "{{ ansible_user }}"
+            group: "{{ ansible_user }}"
+            mode: "0755"
+            state: hard
 
-    - name: Copy kubeconfig file
-      ansible.builtin.file:
-        src: /etc/kubernetes/admin.conf
-        dest: /home/{{ ansible_user }}/.kube/config
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0755"
-        state: hard
+        - name: Copy kubeconfig to host
+          ansible.builtin.fetch:
+            src: /etc/kubernetes/admin.conf
+            dest: "{{ k8_cluster_kubeconfig_path }}"
+            flat: true
+          run_once: true
 
     - name: Cni specific steps
       ansible.builtin.include_tasks:
         file: cni/{{ k8_cluster_cni }}.yml
-
-    - name: Copy kubeconfig to host
-      ansible.builtin.fetch:
-        src: /etc/kubernetes/admin.conf
-        dest: "{{ k8_cluster_kubeconfig_path }}"
-        flat: true
-      run_once: true
+      tags:
+        - cni
 
     - name: Get new certificate key
       ansible.builtin.command:
@@ -73,20 +78,24 @@
 
         creates: /etc/kubernetes/admin.conf
 
-    - name: Create ~/.kube directory
-      ansible.builtin.file:
-        path: /home/{{ ansible_user }}/.kube
-        state: directory
-        mode: "0755"
+    - name: Kubeconfig
+      tags:
+        - kubeconfig
+      block:
+        - name: Create ~/.kube directory
+          ansible.builtin.file:
+            path: /home/{{ ansible_user }}/.kube
+            state: directory
+            mode: "0755"
 
-    - name: Copy kubeconfig file
-      ansible.builtin.file:
-        src: /etc/kubernetes/admin.conf
-        dest: /home/{{ ansible_user }}/.kube/config
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
-        mode: "0755"
-        state: hard
+        - name: Copy kubeconfig file
+          ansible.builtin.file:
+            src: /etc/kubernetes/admin.conf
+            dest: /home/{{ ansible_user }}/.kube/config
+            owner: "{{ ansible_user }}"
+            group: "{{ ansible_user }}"
+            mode: "0755"
+            state: hard
     - name: Balance core dns pods
       ansible.builtin.command:
         cmd: kubectl -n kube-system rollout restart deployment coredns
