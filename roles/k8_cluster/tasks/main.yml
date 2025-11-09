@@ -58,9 +58,13 @@
     # path: /etc/kubernetes/admin.conf
   # register: k8_cluster_admin_conf
 
-- name: Reboot nodes
-  ansible.builtin.reboot:
-  # when: k8_cluster_admin_conf.stat.exists is true
+- name: Install helm diff
+  kubernetes.core.helm_plugin:
+    plugin_path: https://github.com/databus23/helm-diff
+    state: present
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers
 
 - name: Controlplane specific steps
   ansible.builtin.include_tasks:

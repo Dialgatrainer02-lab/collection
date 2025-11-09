@@ -12,3 +12,5 @@
     daemon_reload: true
     state: started
     enabled: true
+- name: Reboot
+  ansible.builtin.reboot:
