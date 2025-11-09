@@ -78,6 +78,6 @@
 
 - name: Get Cluster information
   kubernetes.core.k8s_cluster_info:
-    kubeconfig: "~{{ ansible_user }}/.kube/config"
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
   register: k8_cluster_api_status
   when: "'controlplane' in group_names"

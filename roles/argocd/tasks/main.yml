@@ -9,7 +9,7 @@
   block:
     - name: Add namespace
       kubernetes.core.k8s:
-        kubeconfig: "~{{ ansible_user }}/.kube/config"
+        kubeconfig: "/home/{{ ansible_user }}/.kube/config"
         name: argocd
         api_version: v1
         kind: Namespace
@@ -22,7 +22,7 @@
 
     - name: Apply argocd server manifest to the cluster.
       kubernetes.core.k8s:
-        kubeconfig: "~{{ ansible_user }}/.kube/config"
+        kubeconfig: "/home/{{ ansible_user }}/.kube/config"
         state: present
         src: /tmp/argocd.yml
         namespace: argocd
