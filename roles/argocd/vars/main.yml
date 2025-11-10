@@ -1,2 +1,8 @@
 ---
 argocd_install_url: https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+argocd_application_name:
+argocd_application_repourl:
+argocd_application_ref:
+argocd_application_path:
+argocd_application_namespace:

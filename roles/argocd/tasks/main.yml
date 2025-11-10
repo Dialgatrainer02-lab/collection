@@ -6,6 +6,8 @@
 
 - name: Install argocd
   when: inventory_hostname == groups['controlplane'][0]
+  tags:
+    - install
   block:
     - name: Add namespace
       kubernetes.core.k8s:
@@ -26,3 +28,17 @@
         state: present
         src: /tmp/argocd.yml
         namespace: argocd
+
+- name: Configure argocd
+  tags:
+    - config
+  block:
+    - name: Copy application manifest
+      ansible.builtin.template:
+        src: application.yml.j2
+        dest: /tmp/application.yml
+
+    - name: Apply application
+      kubernetes.core.k8s:
+        state: present
+        src: /tmp/application.yml
