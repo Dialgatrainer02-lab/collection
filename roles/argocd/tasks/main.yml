@@ -30,6 +30,7 @@
         namespace: argocd
 
 - name: Configure argocd
+  when: inventory_hostname == groups['controlplane'][0]
   tags:
     - config
   block:
