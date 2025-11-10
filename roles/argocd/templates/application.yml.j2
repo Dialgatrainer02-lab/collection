@@ -10,6 +10,7 @@ spec:
     targetRevision: {{ argocd_application_ref }}
 {% if argocd_application_path is defined %}
     path: {{ argocd_application_path }}
+{% endif %}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ argocd_application_namespce }}
