@@ -40,5 +40,6 @@
 
     - name: Apply application
       kubernetes.core.k8s:
+        kubeconfig: "/home/{{ ansible_user }}/.kube/config"
         state: present
         src: /tmp/application.yml
