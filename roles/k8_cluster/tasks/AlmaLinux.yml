@@ -8,6 +8,7 @@
   loop: "{{ groups['all'] }}"
   notify:
     - Restart kubelet
+    - Reboot
 
 - name: Add IPv6 to /etc/hosts ### for cluster dns resolution
   ansible.builtin.lineinfile:
@@ -16,6 +17,9 @@
     state: present
     backup: true
   loop: "{{ groups['all'] }}"
+  notify: 
+    - Reboot
+    - Restart kubelet
 
 - name: Package install
   tags: 
@@ -28,6 +32,7 @@
           - dnf-plugins-core
           - epel-release
           - python3-pip
+          - git
         state: present
         enablerepo:
           - crb
