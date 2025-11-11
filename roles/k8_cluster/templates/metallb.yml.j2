@@ -4,5 +4,12 @@ metadata:
   name: pool-1
   namespace: metallb-system
 spec:
+ {% if k8_cluster_lb_addresses is iterable %}
   addresses:
-{{ k8_cluster_lb_addresses | to_nice_yaml(indent=2) | indent(2) }}
+  {% for r in k8_cluster_lb_addresses %}
+  - {{ r }}
+  {% endfor %}
+  {% else %}
+  addresses:
+  - {{ k8_cluster_lb_addresses }}
+  {% endif %}
