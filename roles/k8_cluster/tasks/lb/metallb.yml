@@ -15,3 +15,7 @@
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
     definition: "{{ lookup('template', 'metallb.yml.j2') | from_yaml }}"
     state: present
+- name: Enable l2 advertisement
+  kubernetes.core.k8s:
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+    definition: "{{ lookup('file', 'metallb-l2.yml) | from_yaml }}"
