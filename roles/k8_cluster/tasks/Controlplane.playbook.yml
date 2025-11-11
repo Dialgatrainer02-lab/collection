@@ -32,10 +32,16 @@
             mode: "0755"
             state: hard
 
+        - name: Make kube config dir on host
+          ansible.builtin.file:
+            name: "{{ k8_cluster_kubeconfig_path }}"
+            state: directory
+          delegate_to: localhost
+
         - name: Copy kubeconfig to host
           ansible.builtin.fetch:
             src: /etc/kubernetes/admin.conf
-            dest: "{{ k8_cluster_kubeconfig_path }}"
+            dest: "{{ k8_cluster_kubeconfig_path }}/config"
             flat: true
           run_once: true
 
