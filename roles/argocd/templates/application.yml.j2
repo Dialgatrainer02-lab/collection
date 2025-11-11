@@ -8,9 +8,7 @@ spec:
   source:
     repoURL: {{ argocd_application_repourl }}
     targetRevision: {{ argocd_application_ref }}
-{% if argocd_application_path is defined %}
-    path: {{ argocd_application_path }}
-{% endif %}
+    path: {{ argocd_application_path | default(apps) }}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ argocd_application_namespace }}
