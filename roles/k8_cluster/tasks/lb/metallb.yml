@@ -19,4 +19,4 @@
 - name: Enable l2 advertisement
   kubernetes.core.k8s:
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
-    definition: "{{ lookup('file', 'metallb-l2.yml) | from_yaml }}"
+    definition: "{{ lookup('file', 'metallb-l2.yml') | from_yaml }}"
