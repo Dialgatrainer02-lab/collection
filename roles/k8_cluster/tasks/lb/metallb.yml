@@ -1,0 +1,17 @@
+---
+- name: Add metallb chart repo
+  kubernetes.core.helm_repository:
+    name: metallb
+    repo_url: https://metallb.github.io/metallb
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+- name: Deploy latest version of metallb
+  kubernetes.core.helm:
+    name: metallb
+    chart_ref: metallb/metallb
+    release_namespace: kube-system
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+- name: Configure ip address pool
+  kubernetes.core.k8s:
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+    definition: "{{ lookup('template', 'metallb.yml.j2') | from_yaml }}"
+    state: present

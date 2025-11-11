@@ -5,3 +5,6 @@ k8_cluster_controlplane_endpoint: "{{ undef() }}"
 k8_cluster_service_network_cidr: "{{ undef() }}"
 k8_cluster_cni: cilium
 k8_cluster_kubeconfig_path: ../.kube/config
+k8_cluster_lb: metallb
+k8_cluster_lb_addresses:
+  - "192.168.0.0/24"

@@ -80,8 +80,14 @@
   tags:
     - workers
 
+- name: Install load balancer
+  ansible.builtin.include_tasks:
+    file: "lb/{{ k8_cluster_lb }}.yml"
+
+
 - name: Get Cluster information
   kubernetes.core.k8s_cluster_info:
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
   register: k8_cluster_api_status
   when: "'controlplane' in group_names"
+

@@ -19,14 +19,14 @@
     - name: Download argocd server manifest to the cluster.
       ansible.builtin.get_url:
         url: "{{ argocd_install_url }}"
-        dest: /tmp/argocd.yml
+        dest: "{{ argocd_manifest_path }}/argocd.yml"
         mode: '0664'
 
     - name: Apply argocd server manifest to the cluster.
       kubernetes.core.k8s:
         kubeconfig: "/home/{{ ansible_user }}/.kube/config"
         state: present
-        src: /tmp/argocd.yml
+        src: "{{ argocd_manifest_path }}/argocd.yml"
         namespace: argocd
 
 - name: Configure argocd
@@ -34,13 +34,8 @@
   tags:
     - config
   block:
-    - name: Copy application manifest
-      ansible.builtin.template:
-        src: application.yml.j2
-        dest: /tmp/application.yml
-
     - name: Apply application
       kubernetes.core.k8s:
         kubeconfig: "/home/{{ ansible_user }}/.kube/config"
         state: present
-        src: /tmp/application.yml
+        definition: "{{ lookup('template', 'application.yml.j2') | from_yaml }}"

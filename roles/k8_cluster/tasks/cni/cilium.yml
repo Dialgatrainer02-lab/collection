@@ -11,3 +11,11 @@
     chart_ref: cilium/cilium
     release_namespace: kube-system
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+    values:
+      hubble:
+        relay:
+          enabled: true
+        ui:
+          enabled: true
+# cilium load balancer for argocd ui and home asistant
+
