@@ -11,8 +11,6 @@
     create_namespace: true
     release_namespace: metallb-system
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
-- debug:
-  msg: "{{ lookup('template', 'metallb.yml.j2') | from_yaml }}"
 - name: Configure ip address pool
   kubernetes.core.k8s:
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
