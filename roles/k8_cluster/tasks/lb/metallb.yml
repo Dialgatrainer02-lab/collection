@@ -9,6 +9,7 @@
     name: metallb
     chart_ref: metallb/metallb
     create_namespace: true
+    release_namespace: metallb-system
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
 - name: Configure ip address pool
   kubernetes.core.k8s:
