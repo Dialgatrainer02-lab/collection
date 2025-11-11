@@ -5,12 +5,12 @@ metadata:
   namespace: metallb-system
 spec:
   avoidBuggyIPs: true
- {% if k8_cluster_lb_addresses is iterable %}
+{% if k8_cluster_lb_addresses is iterable %}
   addresses:
-  {% for r in k8_cluster_lb_addresses %}
+{% for r in k8_cluster_lb_addresses %}
   - {{ r }}
-  {% endfor %}
-  {% else %}
+{% endfor %}
+{% else %}
   addresses:
   - {{ k8_cluster_lb_addresses }}
   {% endif %}
