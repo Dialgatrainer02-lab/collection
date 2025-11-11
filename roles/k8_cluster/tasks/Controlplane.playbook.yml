@@ -33,6 +33,7 @@
             state: hard
 
         - name: Make kube config dir on host
+          become: false
           ansible.builtin.file:
             name: "{{ k8_cluster_kubeconfig_path }}"
             state: directory
