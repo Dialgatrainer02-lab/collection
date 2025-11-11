@@ -4,6 +4,7 @@ metadata:
   name: pool-1
   namespace: metallb-system
 spec:
+  avoidBuggyIPs: true
  {% if k8_cluster_lb_addresses is iterable %}
   addresses:
   {% for r in k8_cluster_lb_addresses %}
@@ -13,4 +14,3 @@ spec:
   addresses:
   - {{ k8_cluster_lb_addresses }}
   {% endif %}
-  avoidBuggyIPs: true
