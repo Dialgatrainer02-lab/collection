@@ -83,6 +83,7 @@
 - name: Install load balancer
   ansible.builtin.include_tasks:
     file: "lb/{{ k8_cluster_lb }}.yml"
+  when: "'controlplane' in group_names"
 
 
 - name: Get Cluster information
