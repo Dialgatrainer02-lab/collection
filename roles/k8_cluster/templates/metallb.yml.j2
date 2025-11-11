@@ -5,4 +5,4 @@ metadata:
   namespace: metallb-system
 spec:
   addresses:
-  {{ k8_cluster_lb_addresses }}
+{{ k8_cluster_lb_addresses | to_nice_yaml(indent=2) | indent(2) }}
