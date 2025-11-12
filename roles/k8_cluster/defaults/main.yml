@@ -7,4 +7,4 @@ k8_cluster_cni: cilium
 k8_cluster_kubeconfig_path: ~/.kube
 k8_cluster_lb: metallb
 k8_cluster_lb_addresses:
-  - "192.168.0.0/24"
+  - "192.168.0.12-192.168.0.233"
