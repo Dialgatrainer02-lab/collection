@@ -8,7 +8,9 @@
           sudo kubeadm init
           --pod-network-cidr={{ k8_cluster_pod_network_cidr }}
           {{ '--service-cidr=%s' | format(k8_cluster_service_network_cidr)  | default(omit) }}
-          --control-plane-endpoint={{ k8_cluster_controlplane_endpoint | default(inventory_hostname ~ ':6443') }}
+          {{ k8_cluster_cni == 'cilium' | ternary('--skip-phases=addon/kube-proxy', omit)  }}
+          --apiserver-bind-port={{ k8_cluster_controlplane_endpoint_port  }}
+          --control-plane-endpoint={{ k8_cluster_controlplane_endpoint | default(inventory_hostname) }}
           --upload-certs
         creates: /etc/kubernetes/admin.conf
       run_once: true

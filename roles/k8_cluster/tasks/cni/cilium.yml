@@ -17,5 +17,8 @@
           enabled: true
         ui:
           enabled: true
-# cilium load balancer for argocd ui and home asistant
+      kubeProxyReplacement: true
+      k8sServiceHost: {{ k8_cluster_controlplane_endpoint | default(inventory_hostname) }}
+      k8sServicePort: {{ k8_cluster_controlplane_endpoint_port }}
+      
 

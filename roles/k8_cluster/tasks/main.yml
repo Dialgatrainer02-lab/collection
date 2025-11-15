@@ -65,6 +65,7 @@
 
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
+  throttle: 2
 
 - name: Controlplane specific steps
   ansible.builtin.include_tasks:
