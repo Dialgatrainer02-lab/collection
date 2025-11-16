@@ -19,6 +19,6 @@
           enabled: true
       kubeProxyReplacement: true
       k8sServiceHost: "{{ k8_cluster_controlplane_endpoint | default(inventory_hostname) }}"
-      k8sServicePort: k8_cluster_controlplane_endpoint_port
+      k8sServicePort: "{{ k8_cluster_controlplane_endpoint_port }}"
       
 
