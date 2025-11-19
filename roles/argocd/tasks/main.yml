@@ -6,8 +6,6 @@
 
 - name: Install argocd
   when: inventory_hostname == groups['controlplane'][0]
-  tags:
-    - install
   block:
     - name: Add argo chart repo
       kubernetes.core.helm_repository:
@@ -27,8 +25,6 @@
 
 - name: Configure argocd
   when: inventory_hostname == groups['controlplane'][0]
-  tags:
-    - config
   block:
     - name: Apply application manifest
       kubernetes.core.k8s:

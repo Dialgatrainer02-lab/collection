@@ -16,8 +16,6 @@
       run_once: true
 
     - name: Kubeconfig
-      tags:
-        - kubeconfig
       block:
         - name: Create ~/.kube directory
           ansible.builtin.file:
@@ -51,8 +49,6 @@
     - name: Cni specific steps
       ansible.builtin.import_tasks:
         file: cni/{{ k8_cluster_cni }}.yml
-      tags:
-        - cni
 
     - name: Get new certificate key
       ansible.builtin.command:
@@ -88,8 +84,6 @@
         creates: /etc/kubernetes/admin.conf
 
     - name: Kubeconfig
-      tags:
-        - kubeconfig
       block:
         - name: Create ~/.kube directory
           ansible.builtin.file:
