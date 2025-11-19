@@ -77,3 +77,5 @@
       ansible.builtin.include_tasks:
         file: "lb/{{ k8_cluster_lb }}.yml"
       when: k8_cluster_lb is defined
+
+# cilium ingress doesnt need any config will add if i move ingress controller

@@ -15,3 +15,9 @@ k8sClientRateLimit:
   qps: {{ k8_cluster_lb_qps }}
   burst: {{ k8_cluster_lb_burst }}
 {% endif %}
+{% if k8_cluster_ingress == 'cilium' %}
+ingressController:
+  enabled: true
+  loadbalancerMode: dedicated
+  default: true
+{% endif %}
