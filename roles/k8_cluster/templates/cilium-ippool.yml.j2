@@ -3,7 +3,7 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: "pool-1"
 spec:
-  allowFirstLastIPs: "no"
+  allowFirstLastIPs: "No"
   blocks:
 {% for range in k8_cluster_lb_address_range %}
   - start: "{{ range.start }}"
