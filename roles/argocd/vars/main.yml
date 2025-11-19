@@ -1,3 +1,3 @@
 ---
-argocd_version: latest
+argocd_version: "{{ undef() }}"
 argocd_application_ref: HEAD
