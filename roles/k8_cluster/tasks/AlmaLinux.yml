@@ -21,7 +21,7 @@
     - Reboot
     - Restart kubelet
 
-- name: Package install
+- name: Package installations
   tags: 
     - packages
   block:
@@ -61,7 +61,7 @@
         state: present
         disable_excludes: kubernetes
 
-    - name: Install pre-requisites
+    - name: Install python dependancies
       ansible.builtin.pip:
         name:
           - pyyaml

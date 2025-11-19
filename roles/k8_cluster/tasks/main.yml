@@ -1,12 +1,4 @@
 ---
-# - name: Wait 300 seconds for port 22
-# ansible.builtin.wait_for:
-
-# port: "22"
-# host: "{{ (ansible_ssh_host | default(ansible_host)) | default(inventory_hostname) }}"
-# search_regex: OpenSSH
-# delay: "10"
-# timeout: "300"
 - name: Set hostname
   ansible.builtin.hostname:
     name: "{{ inventory_hostname }}"
@@ -15,7 +7,7 @@
   ansible.builtin.include_tasks:
     file: "{{ ansible_distribution }}.yml"
 
-- name: Write config
+- name: Write containerd config
   ansible.builtin.copy:
     src: config.toml
     dest: /etc/containerd/config.toml
@@ -42,7 +34,7 @@
     - { name: "net.ipv4.ip_forward", value: "1" }
 
 
-- name: Put SELinux in permissive mode, logging actions that would be blocked.
+- name: Put SELinux in permissive mode
   ansible.posix.selinux:
     policy: targeted
     state: permissive
@@ -87,10 +79,3 @@
       ansible.builtin.include_tasks:
         file: "lb/{{ k8_cluster_lb }}.yml"
       when: k8_cluster_lb is defined
-    
-    
-    - name: Get Cluster information
-      kubernetes.core.k8s_cluster_info:
-        kubeconfig: "/home/{{ ansible_user }}/.kube/config"
-      register: k8_cluster_api_status
-

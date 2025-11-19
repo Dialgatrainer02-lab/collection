@@ -34,7 +34,7 @@
             mode: "0755"
             state: hard
 
-        - name: Make kube config dir on host
+        - name: Make kube config dir on local
           become: false
           ansible.builtin.file:
             name: "{{ k8_cluster_kubeconfig_path }}"
@@ -105,6 +105,7 @@
             group: "{{ ansible_user }}"
             mode: "0755"
             state: hard
+
     - name: Balance core dns pods
       ansible.builtin.command:
         cmd: kubectl -n kube-system rollout restart deployment coredns

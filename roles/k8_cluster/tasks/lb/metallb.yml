@@ -4,11 +4,12 @@
     name: metallb
     repo_url: https://metallb.github.io/metallb
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
-- name: Deploy latest version of metallb
+- name: Deploy metallb
   kubernetes.core.helm:
     name: metallb
     chart_ref: metallb/metallb
     create_namespace: true
+    chart_version: "{{ k8_cluster_lb_version }}"
     release_namespace: metallb-system
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
 - name: Configure ip address pool

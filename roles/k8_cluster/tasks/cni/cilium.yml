@@ -5,11 +5,12 @@
     repo_url: https://helm.cilium.io/
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
 
-- name: Deploy latest version of cillium
+- name: Deploy cillium
   kubernetes.core.helm:
     name: cilium
     chart_ref: cilium/cilium
     release_namespace: kube-system
+    chart_version: "{{ k8_cluster_cni_version }}"
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
     values:
       hubble:
