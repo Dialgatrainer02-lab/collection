@@ -4,9 +4,9 @@ k8_cluster_pod_network_cidr: 10.244.0.0/16
 k8_cluster_service_network_cidr: "{{ undef() }}"
 
 k8_cluster_cni: cilium
-k8_cluster_cni_version: latest
+k8_cluster_cni_version: "{{ undef() }}" 
 k8_cluster_lb: cilium
-k8_cluster_lb_version: latest
+k8_cluster_lb_version: "{{ undef() }}"
 k8_cluster_lb_address_range:
   - start: "192.168.0.12"
     stop: "192.168.0.233"
