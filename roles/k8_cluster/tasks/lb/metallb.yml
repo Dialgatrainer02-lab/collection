@@ -9,7 +9,7 @@
     name: metallb
     chart_ref: metallb/metallb
     create_namespace: true
-    chart_version: "{{ k8_cluster_lb_version }}"
+    chart_version: "{{ k8_cluster_lb_version | default(omit) }}"
     release_namespace: metallb-system
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
 - name: Configure ip address pool

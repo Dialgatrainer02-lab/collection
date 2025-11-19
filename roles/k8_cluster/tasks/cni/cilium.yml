@@ -10,7 +10,7 @@
     name: cilium
     chart_ref: cilium/cilium
     release_namespace: kube-system
-    chart_version: "{{ k8_cluster_cni_version }}"
+    chart_version: "{{ k8_cluster_cni_version | default(omit) }}"
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
     values: "{{ lookup('template', 'cilium-values.yml.j2') | from_yaml }}"
     
