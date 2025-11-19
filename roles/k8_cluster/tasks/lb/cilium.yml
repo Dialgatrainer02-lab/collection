@@ -1,0 +1,11 @@
+---
+- name: Enable l2 advertisement
+  kubernetes.core.k8s:
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+    definition: "{{ lookup('file', 'cilium-l2.yml') | from_yaml }}"
+    state: present
+- name: Configure ip address pool
+  kubernetes.core.k8s:
+    kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+    definition: "{{ lookup('template', 'cilium-ippool.yml.j2') | from_yaml }}"
+    state: present

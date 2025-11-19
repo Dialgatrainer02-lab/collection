@@ -12,14 +12,6 @@
     release_namespace: kube-system
     chart_version: "{{ k8_cluster_cni_version }}"
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
-    values:
-      hubble:
-        relay:
-          enabled: true
-        ui:
-          enabled: true
-      kubeProxyReplacement: true
-      k8sServiceHost: "{{ k8_cluster_controlplane_endpoint | default(inventory_hostname) }}"
-      k8sServicePort: "{{ k8_cluster_controlplane_endpoint_port }}"
-      
+    values: "{{ lookup('template', 'cilium-values.yml.j2') | from_yaml }}"
+    
 
