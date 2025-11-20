@@ -13,5 +13,6 @@
     chart_version: "{{ k8_cluster_cni_version | default(omit) }}"
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
     values: "{{ lookup('template', 'cilium-values.yml.j2') | from_yaml }}"
-    
 
+- debug:
+    msg: "{{ lookup('template', 'cilium-values.yml.j2') | from_yaml }}"
