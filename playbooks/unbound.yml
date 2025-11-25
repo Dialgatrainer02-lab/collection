@@ -1,0 +1,10 @@
+---
+- name: Create a dns server
+  hosts: '{{target|default("dns")}}'
+  become: true
+  tasks:
+    # - name: Configure dns server
+      # ansible.builtin.include_role:
+        # name: dialgatrainer02_lab.homelab.unbound
+      - debug:
+          msg: "test"
