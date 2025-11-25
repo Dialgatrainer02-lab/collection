@@ -1,4 +1,4 @@
 k8_cluster_k8_ver: v1.34
-k8_cluster_helm_version: v4.0.0
+k8_cluster_helm_version: v3.19.2
 k8_cluster_kubeconfig_path: ~/.kube
 k8_cluster_controlplane_endpoint_port: 6443
