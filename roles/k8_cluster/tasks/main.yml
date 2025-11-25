@@ -66,7 +66,7 @@
   kubernetes.core.helm_plugin:
     plugin_path: https://github.com/databus23/helm-diff
     state: present
-
+    verify_ssl: false
 - name: Flush handlers
   ansible.builtin.meta: flush_handlers
   throttle: 2
