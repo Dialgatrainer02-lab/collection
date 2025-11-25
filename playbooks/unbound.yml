@@ -27,4 +27,8 @@
       # ansible.builtin.command:
         # cmd: sudo -u unbound unbound-control-setup
         # creates: /usr/local/etc/unbound/unbound_server.key
-        
+    - name: start unbound
+      ansible.builtin.systemd_service:
+        name: unbound
+        enabled: yes
+        state: started
