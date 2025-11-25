@@ -59,7 +59,7 @@
           - kubectl
           - kubelet
           - kubeadm
-          - helm
+          # - helm
         state: present
         disable_excludes: kubernetes
 
