@@ -31,4 +31,4 @@
       ansible.builtin.systemd_service:
         name: unbound
         enabled: yes
-        state: started
+        state: restarted
