@@ -5,9 +5,9 @@
   tasks:
     - name: Make Cluster
       ansible.builtin.include_role:
-        name: dialgatrainer02_lab.kubernetes.k8_cluster
+        name: dialgatrainer02_lab.homelab.k8_cluster
 
     # later to argo cd
     - name: Install argocd
       ansible.builtin.include_role:
-        name: dialgatrainer02_lab.kubernetes.argocd
+        name: dialgatrainer02_lab.homelab.argocd
