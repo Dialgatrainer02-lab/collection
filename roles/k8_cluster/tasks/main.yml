@@ -10,14 +10,14 @@
 - name: Install helm
   unarchive:
     src: https://get.helm.sh/helm-{{ k8_cluster_helm_version }}-linux-amd64.tar.gz
-    dest: /usr/local/bin
+    dest: /usr/bin
     extra_opts: "--strip-components=1"
     owner: root
     group: root
     mode: 0755
     remote_src: true
   args:
-    creates: /usr/local/bin/helm
+    creates: /usr/bin/helm
 
 - name: Write containerd config
   ansible.builtin.copy:
