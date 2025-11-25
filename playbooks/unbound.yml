@@ -3,8 +3,24 @@
   hosts: '{{target|default("dns")}}'
   become: true
   tasks:
-    # - name: Configure dns server
-      # ansible.builtin.include_role:
-        # name: dialgatrainer02_lab.homelab.unbound
-      - debug:
-          msg: "test"
+    - name: Install unbound
+      ansible.builtin.dnf:
+        name:
+          - unbound
+    - name: Get root hints
+      ansible.builtin.get_url:
+        url: https://www.internic.net/domain/named.cache
+        dest: /var/lib/unbound/root.hints
+    - name: Set up trust anchor
+      ansible.builtin.command:
+        cmd: sudo -u unbound  unbound-anchor
+        creates: "/var/lib/unbound/root.key"
+    - name: Generate unbound config
+      ansible.builtin.copy:
+        src: 99-unbound.conf
+        dest: /etc/unbound/unbound.conf.d/99-unbound.conf
+    # - name: Set up remote control
+      # ansible.builtin.command:
+        # cmd: sudo -u unbound unbound-control-setup
+        # creates: /usr/local/etc/unbound/unbound_server.key
+        
