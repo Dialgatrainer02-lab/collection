@@ -13,7 +13,7 @@
 - name: Add IPv6 to /etc/hosts ### for cluster dns resolution
   ansible.builtin.lineinfile:
     path: /etc/cloud/templates/hosts.redhat.tmpl
-    line: "{{ hostvars[item]['ipv6_address'] }} {{ hostvars[item]['inventory_hostname'] }}"
+    line: "{{ ansible_eth0['ipv6'][0]['address'] }} {{ hostvars[item]['inventory_hostname'] }}"
     state: present
     backup: true
   loop: "{{ groups['all'] }}"
