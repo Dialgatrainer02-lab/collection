@@ -7,6 +7,10 @@
       ansible.builtin.dnf:
         name:
           - unbound
+    - name: Make unbound config dir
+      ansible.builtin.file:
+        name: /etc/unbound/unbound.conf.d
+        state: directory
     - name: Get root hints
       ansible.builtin.get_url:
         url: https://www.internic.net/domain/named.cache
