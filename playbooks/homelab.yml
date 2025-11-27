@@ -1,12 +1,5 @@
-- name: Homelab
-  hosts: '{{target|default("all")}}'
-  become: true
-  tasks:
-    - name: Install dns servers
-      ansible.builtin.import_playbook: dialgatrainer02_lab.homelab.dns.yml
-      tags:
-        - dns
-    - name: Install cluster
-      ansible.builtin.import_playbook: dialgatrainer02_lab.homelab.cluster.yml
-      tags:
-        - cluster
+- ansible.builtin.import_playbook: dialgatrainer02_lab.homelab.dns.yml
+- ansible.builtin.import_playbook: dialgatrainer02_lab.homelab.cluster.yml
+# - name: Homelab
+  # hosts: '{{target|default("all")}}'
+  # become: true
