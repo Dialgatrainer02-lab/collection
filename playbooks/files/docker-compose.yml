@@ -6,7 +6,8 @@ services:
     container_name: unbound
     restart: unless-stopped
     networks:
-      - dnsnet
+      dnsnet:
+        ipv4_address: 10.5.0.6 // have to set static for coredns
     # volumes:
       # - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf
 
@@ -42,3 +43,7 @@ services:
 networks:
   dnsnet:
     driver: bridge
+    ipam:
+     config:
+       - subnet: 10.5.0.0/16
+         gateway: 10.5.0.1

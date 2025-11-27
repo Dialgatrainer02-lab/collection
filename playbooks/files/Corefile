@@ -6,7 +6,7 @@
         endpoint http://etcd:2379
     }
     
-    forward . unbound:53
+    forward . 10.5.0.6:53
     log
     errors
 }
