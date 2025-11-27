@@ -42,7 +42,7 @@
     - name: make config dir
       ansible.builtin.file:
         state: directory
-        path: {{ config_dir }}
+        path: "{{ config_dir }}"
     - name: copy files
       ansible.builtin.copy:
         dest: "{{ config_dir }}/{{ item }}"
@@ -51,4 +51,10 @@
         - docker-compose.yml
         - Corefile
         - unbound.conf
+    - name: start docker compose
+    # shoudl use docker compose module
+      ansible.builtin.command:
+        cmd: docker compose up -d
+        chdir: "{{ config_dir }}"
+        
     
