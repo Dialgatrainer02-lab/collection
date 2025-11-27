@@ -21,6 +21,8 @@ services:
       - --advertise-client-urls=http://0.0.0.0:2379
       - --listen-client-urls=http://0.0.0.0:2379
     restart: unless-stopped
+    ports:
+      - "2379:2379"
     networks:
       - dnsnet
     volumes:
