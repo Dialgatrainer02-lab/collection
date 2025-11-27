@@ -1,0 +1,44 @@
+version: "3.9"
+
+services:
+  unbound:
+    image: mvance/unbound:latest
+    container_name: unbound
+    restart: unless-stopped
+    networks:
+      - dnsnet
+    # volumes:
+      # - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf
+
+  etcd:
+    image: quay.io/coreos/etcd:latest
+    container_name: etcd
+    command:
+      - /usr/local/bin/etcd
+      - --data-dir=/etcd-data
+      - --advertise-client-urls=http://0.0.0.0:2379
+      - --listen-client-urls=http://0.0.0.0:2379
+    restart: unless-stopped
+    networks:
+      - dnsnet
+    volumes:
+      - ./etcd-data:/etcd-data
+
+  coredns:
+    image: coredns/coredns:latest
+    container_name: coredns
+    restart: unless-stopped
+    depends_on:
+      - unbound
+      - etcd
+    networks:
+      - dnsnet
+    ports:
+      - "5300:53/tcp"
+      - "5300:53/udp"
+    volumes:
+      - ./Corefile:/Corefile
+
+networks:
+  dnsnet:
+    driver: bridge
