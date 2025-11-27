@@ -1,0 +1,2 @@
+dns_config_dir: /opt/dns
+dns_unbound_container_ip: 10.5.0.6
