@@ -9,8 +9,8 @@ services:
       dnsnet:
         ipv4_address: 10.5.0.6 
         #  have to set static for coredns
-    # volumes:
-      # - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf
+    volumes:
+      - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf
 
   etcd:
     image: quay.io/coreos/etcd:v3.6.6
