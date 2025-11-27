@@ -1,9 +1,13 @@
-etcd {
-    path /skydns
-    endpoint http://etcd:2379
+. {
+    cache
+    etcd homelab.lan {
+        stubzones
+        path /skydns
+        endpoint http://etcd:2379
+    }
+    
+    forward . unbound:53
+    log
+    errors
 }
-
-forward . unbound:53
-log
-errors
 
