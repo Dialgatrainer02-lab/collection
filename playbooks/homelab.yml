@@ -1,4 +1,6 @@
 - ansible.builtin.import_playbook: dialgatrainer02_lab.homelab.dns.yml
+  tags:
+    - dns
 - ansible.builtin.import_playbook: dialgatrainer02_lab.homelab.cluster.yml
 # - name: Homelab
   # hosts: '{{target|default("all")}}'
