@@ -1,5 +1,4 @@
 etcd {
-    stubzones
     path /skydns
     endpoint http://etcd:2379
 }
