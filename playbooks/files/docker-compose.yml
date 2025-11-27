@@ -7,7 +7,8 @@ services:
     restart: unless-stopped
     networks:
       dnsnet:
-        ipv4_address: 10.5.0.6 // have to set static for coredns
+        ipv4_address: 10.5.0.6 
+        #  have to set static for coredns
     # volumes:
       # - ./unbound.conf:/opt/unbound/etc/unbound/unbound.conf
 
