@@ -13,31 +13,3 @@
     chart_version: "{{ k8_cluster_cni_version | default(omit) }}"
     kubeconfig: "/home/{{ ansible_user }}/.kube/config"
     values: "{{ lookup('template', 'cilium-values.yml.j2') | from_yaml }}"
-
-- name: Wait for Cilium to be fully running
-  vars:
-    cilium_label: "k8s-app=cilium"
-  until: >
-    cilium_pods.resources | length > 0 and
-    (
-      cilium_pods.resources
-      | map(attribute='status.containerStatuses')
-      | flatten
-      | selectattr('ready', 'equalto', true)
-      | list
-      | length
-    ) == (
-      cilium_pods.resources
-      | map(attribute='status.containerStatuses')
-      | flatten
-      | length
-    )
-  retries: 30
-  delay: 10
-  k8s_info:
-    api_version: v1
-    kind: Pod
-    namespace: kube-system
-    label_selectors:
-      - "{{ cilium_label }}"
-  register: cilium_pods
