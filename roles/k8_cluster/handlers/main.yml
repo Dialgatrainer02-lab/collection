@@ -14,3 +14,4 @@
     enabled: true
 - name: Reboot
   ansible.builtin.reboot:
+  throttle: 2

@@ -7,7 +7,13 @@
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.k8_cluster
 
-    # later to argo cd
+    # later to argo cd decorations
+    - name: Install argocd
+      ansible.builtin.include_role:
+        name: dialgatrainer02_lab.homelab.argocd
+      vars:
+        argocd_application_path: decorations
+        argocd_application_name: decorations
     - name: Install argocd
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.argocd

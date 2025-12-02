@@ -14,6 +14,7 @@
     src: docker-ce.repo
     dest: /etc/yum.repos.d/docker-ce.repo
     mode: "0755"
+  notify: Restart docker
 - name: Install docker 
   ansible.builtin.dnf:
     name:
