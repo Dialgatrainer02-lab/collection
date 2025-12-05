@@ -7,6 +7,7 @@
       - python3-pip
       - git
     state: present
+    best: false
     enablerepo:
       - crb
 - name: Add Docker CE repository
