@@ -10,6 +10,8 @@
     best: false
     enablerepo:
       - crb
+    disablerepo:
+      - epel
 - name: Add Docker CE repository
   ansible.builtin.copy:
     src: docker-ce.repo

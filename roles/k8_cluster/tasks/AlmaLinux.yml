@@ -36,6 +36,8 @@
         state: present
         enablerepo:
           - crb
+        disablerepo:
+          - epel
     
     - name: Add Docker CE repository
       ansible.builtin.copy:
