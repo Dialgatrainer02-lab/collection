@@ -6,7 +6,7 @@
         endpoint http://etcd:2379
         fallthrough
     }
-    hosts {
+    hosts {{ dns_domain }} {
         Managed by Jinja2 template
 
         ### IPv4 cluster entries
@@ -26,6 +26,7 @@
         {% for line in dns_extra_entries %}
         {{ line }}
         {% endfor %}
+
     }
     
     forward . {{ dns_unbound_container_ip }}:53
