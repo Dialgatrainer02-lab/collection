@@ -39,7 +39,7 @@
     - name: Change nameserver in resolv.conf
       ansible.builtin.lineinfile:
         path: /etc/resolv.conf
-        regexp: '^nameserver {{ idx }}'
+        regexp: '^nameserver'
         line: "nameserver {{ hostvars[item].ansible_host }}"
       loop: "{{ groups['dns'] }}"
       loop_control:
