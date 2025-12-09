@@ -7,19 +7,45 @@
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.dns
 - name: Set dns server
-  hosts: '{{target|default("all:!dns")}}'
+  hosts: "{{ target | default('all:!dns') }}"
   become: true
+
   tasks:
+    - name: Check if network config exists
+      ansible.builtin.stat:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth0
+      register: ifcfg_eth0
+
     - name: Change dns server
       ansible.builtin.lineinfile:
-        path: /etc/sysconfig/network-scripts/ifcfg-eth0 
+        path: /etc/sysconfig/network-scripts/ifcfg-eth0
         regexp: '^DNS{{ idx }}'
         line: "DNS{{ idx }}={{ hostvars[item].ansible_host }}"
-      when:  ansible_distribution == "AlmaLinux" 
-      notify: Restart network
       loop: "{{ groups['dns'] }}"
       loop_control:
         index_var: idx
+      when:
+        - ansible_distribution == "AlmaLinux"
+        - ifcfg_eth0.stat.exists
+      notify: Restart network
+    - name: Disable network manager dns handling
+      ansible.builtin.copy:
+        src: 99-dns.conf
+        dest: /etc/NetworkManager/conf.d/99-dns.conf
+    - name: Change nameserver in resolv.conf
+      ansible.builtin.lineinfile:
+        path: /etc/resolv.conf
+        regexp: '^nameserver {{ idx }}'
+        line: "nameserver {{ hostvars[item].ansible_host }}"
+      loop: "{{ groups['dns'] }}"
+      loop_control:
+        index_var: idx
+      when:
+        - ansible_distribution == "AlmaLinux"
+        - ifcfg_eth0.stat.exists != true
+      notify: Restart network
+      
+
   handlers:
     - name: Restart network
       ansible.builtin.systemd_service:
