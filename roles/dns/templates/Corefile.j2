@@ -1,6 +1,6 @@
 . {
     cache
-    etcd homelab.lan {
+    etcd {{ dns_domain }} {
         stubzones
         path /skydns
         endpoint http://etcd:2379
@@ -11,15 +11,15 @@
 
         ### IPv4 cluster entries
         {% for item in groups['all'] %}
-        {{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}
+        {{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}.{{ dns_domain }}
         {% endfor %}
         
         ### IPv6 cluster entries
         {% for item in groups['all'] %}
         {%   set v6 = hostvars[item].ansible_facts.eth0.ipv6 | default([]) %}
-        {%   if v6 %}
-        {{ v6[0].address }} {{ hostvars[item].inventory_hostname }}
-        {%   endif %}
+{%   if v6 %}
+        {{ v6[0].address }} {{ hostvars[item].inventory_hostname }}.{{ dns_domain }}
+{%   endif %}
         {% endfor %}
         
         ### Static entries appended at end
