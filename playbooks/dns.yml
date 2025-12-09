@@ -6,3 +6,4 @@
     - name: Make dns stack
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.dns
+    

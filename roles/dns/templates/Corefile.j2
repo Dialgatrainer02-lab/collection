@@ -4,10 +4,33 @@
         stubzones
         path /skydns
         endpoint http://etcd:2379
+        fallthrough
+    }
+    hosts {
+        Managed by Jinja2 template
+
+        ### IPv4 cluster entries
+        {% for item in groups['all'] %}
+        {{ hostvars[item].ansible_host }} {{ hostvars[item].inventory_hostname }}
+        {% endfor %}
+        
+        ### IPv6 cluster entries
+        {% for item in groups['all'] %}
+        {%   set v6 = hostvars[item].ansible_facts.eth0.ipv6 | default([]) %}
+        {%   if v6 %}
+        {{ v6[0].address }} {{ hostvars[item].inventory_hostname }}
+        {%   endif %}
+        {% endfor %}
+        
+        ### Static entries appended at end
+        {% for line in dns_extra_entries %}
+        {{ line }}
+        {% endfor %}
     }
     
     forward . {{ dns_unbound_container_ip }}:53
     log
+    minimal
     errors
 }
 
