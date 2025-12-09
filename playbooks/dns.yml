@@ -6,4 +6,22 @@
     - name: Make dns stack
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.dns
-    
+- name: Set dns server
+  hosts: '{{target|default("all:!dns")}}'
+  become: true
+  tasks:
+    - name: Change dns server
+      ansible.builtin.lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth0 
+        regexp: '^DNS{{ idx }}'
+        line: "DNS{{ idx }}={{ hostvars[item].ansible_host }}"
+      when:  ansible_distribution == "AlmaLinux" 
+      notify: Restart network
+      loop: "{{ groups['dns'] }}"
+      loop_control:
+        index_var: idx
+  handlers:
+    - name: Restart network
+      ansible.builtin.systemd_service:
+        name: network
+        state: restarted
