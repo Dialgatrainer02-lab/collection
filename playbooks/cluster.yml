@@ -14,6 +14,7 @@
       vars:
         argocd_application_path: decorations
         argocd_application_name: decorations
+        argocd_application_auto_sync: true
     - name: Install argocd
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.argocd
