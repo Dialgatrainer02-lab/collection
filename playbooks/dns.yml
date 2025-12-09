@@ -32,6 +32,10 @@
       ansible.builtin.copy:
         src: 99-dns.conf
         dest: /etc/NetworkManager/conf.d/99-dns.conf
+      notify: Restart network
+    - name: Flush handlers
+      ansible.builtin.meta: flush_handlers
+      throttle: 2
     - name: Change nameserver in resolv.conf
       ansible.builtin.lineinfile:
         path: /etc/resolv.conf
