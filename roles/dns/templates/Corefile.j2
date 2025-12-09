@@ -1,13 +1,17 @@
 . {
-    cache
+    log
+    errors
+    cache 30
+
     etcd {{ dns_domain }} {
         stubzones
         path /skydns
         endpoint http://etcd:2379
         fallthrough
     }
+
     hosts {{ dns_domain }} {
-        Managed by Jinja2 template
+        # Managed by Jinja2 template
 
         ### IPv4 cluster entries
         {% for item in groups['all'] %}
@@ -27,11 +31,11 @@
         {{ line }}
         {% endfor %}
 
+        fallthrough
     }
-    
-    forward . {{ dns_unbound_container_ip }}:53
-    log
-    minimal
-    errors
-}
 
+    # Forward everything else to a recursive DNS resolver
+    forward . {{ dns_unbound_container_ip }}:53 {
+        policy sequential
+    }
+}
