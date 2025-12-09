@@ -32,7 +32,7 @@
       ansible.builtin.copy:
         src: 99-dns.conf
         dest: /etc/NetworkManager/conf.d/99-dns.conf
-      notify: Restart network
+      notify: Restart network manager
     - name: Flush handlers
       ansible.builtin.meta: flush_handlers
       throttle: 2
@@ -47,11 +47,15 @@
       when:
         - ansible_distribution == "AlmaLinux"
         - ifcfg_eth0.stat.exists != true
-      notify: Restart network
+      notify: Restart network manager
       
 
   handlers:
     - name: Restart network
       ansible.builtin.systemd_service:
         name: network
+        state: restarted
+    - name: Restart network manager
+      ansible.builtin.systemd_service:
+        name: NetworkManager
         state: restarted
