@@ -42,16 +42,23 @@
           ansible.builtin.slurp:
             path: /etc/resolv.conf
           register: resolv_raw
+          when: ansible_distribution == "AlmaLinux"
     
-        # Determine if all DNS IPs are already present
-        - name: Check if DNS servers already exist
+        - name: Build list of DNS host IPs from inventory
           ansible.builtin.set_fact:
-            dns_already_set: >-
-              {{ groups['dns'] | map('extract', hostvars, 'ansible_host') | list
-                | difference(resolv_raw.content | b64decode | regex_findall('nameserver\\s+(\\S+)')) 
-                | length == 0 }}
+            dns_hosts: "{{ groups['dns'] | map('extract', hostvars, 'ansible_host') | map('string') | list }}"
+          when: ansible_distribution == "AlmaLinux"
     
-        # Remove existing nameserver entries ONLY if DNS is not already correct
+        - name: Extract current nameservers from resolv.conf
+          ansible.builtin.set_fact:
+            current_nameservers: "{{ (resolv_raw.content | b64decode) | regex_findall('nameserver\\s+(\\S+)') | map('string') | list }}"
+          when: ansible_distribution == "AlmaLinux"
+    
+        - name: Check whether all DNS hosts are already present
+          ansible.builtin.set_fact:
+            dns_already_set: "{{ (dns_hosts | difference(current_nameservers)) | length == 0 }}"
+          when: ansible_distribution == "AlmaLinux"
+    
         - name: Remove existing nameserver lines
           ansible.builtin.lineinfile:
             path: /etc/resolv.conf
@@ -60,6 +67,7 @@
           when:
             - ansible_distribution == "AlmaLinux"
             - not dns_already_set
+    
     
         # Add new nameserver entries in order
         - name: Add nameservers in order
