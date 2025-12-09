@@ -1,3 +1,2 @@
 dns_extra_entries:
-  - "192.168.0.90 pve.homelab.lan"
 dns_domain: homelab.lan

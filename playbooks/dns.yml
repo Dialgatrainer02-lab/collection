@@ -6,6 +6,10 @@
     - name: Make dns stack
       ansible.builtin.include_role:
         name: dialgatrainer02_lab.homelab.dns
+      vars:
+        dns_extra_entries:
+          - "192.168.0.90 pve.homelab.lan"
+          - "192.168.0.91 pve1.homelab.lan"
 - name: Set dns server
   hosts: "{{ target | default('all:!dns') }}"
   become: true
@@ -47,9 +51,6 @@
         index_var: idx
       when: ansible_distribution == "AlmaLinux"
       notify: Restart network manager
-  
-        
-
   handlers:
     - name: Restart network
       ansible.builtin.systemd_service:
