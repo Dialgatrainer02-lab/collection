@@ -32,25 +32,47 @@
         - ansible_distribution == "AlmaLinux"
         - ifcfg_eth0.stat.exists
       notify: Restart network
-    - name: Remove existing nameserver lines
-      ansible.builtin.lineinfile:
-        path: /etc/resolv.conf
-        regexp: '^nameserver'
-        state: absent
-      when: 
-        - ansible_distribution == "AlmaLinux"
+    - name: network manager
+      when:
         - ifcfg_eth0.stat.exists != true
-  
-    - name: Add nameservers in order (first DNS overrides first)
-      ansible.builtin.lineinfile:
-        path: /etc/resolv.conf
-        line: "nameserver {{ hostvars[item].ansible_host }}"
-        insertafter: EOF
-      loop: "{{ groups['dns'] }}"
-      loop_control:
-        index_var: idx
-      when: ansible_distribution == "AlmaLinux"
+        - ansible_distribution == "AlmaLinux"
       notify: Restart network manager
+      block:
+        - name: Read resolv.conf
+          ansible.builtin.slurp:
+            path: /etc/resolv.conf
+          register: resolv_raw
+    
+        # Determine if all DNS IPs are already present
+        - name: Check if DNS servers already exist
+          ansible.builtin.set_fact:
+            dns_already_set: >-
+              {{ groups['dns'] | map('extract', hostvars, 'ansible_host') | list
+                | difference(resolv_raw.content | b64decode | regex_findall('nameserver\\s+(\\S+)')) 
+                | length == 0 }}
+    
+        # Remove existing nameserver entries ONLY if DNS is not already correct
+        - name: Remove existing nameserver lines
+          ansible.builtin.lineinfile:
+            path: /etc/resolv.conf
+            regexp: '^nameserver'
+            state: absent
+          when:
+            - ansible_distribution == "AlmaLinux"
+            - not dns_already_set
+    
+        # Add new nameserver entries in order
+        - name: Add nameservers in order
+          ansible.builtin.lineinfile:
+            path: /etc/resolv.conf
+            line: "nameserver {{ hostvars[item].ansible_host }}"
+            insertafter: EOF
+          loop: "{{ groups['dns'] }}"
+          loop_control:
+            index_var: idx
+          when:
+            - ansible_distribution == "AlmaLinux"
+            - not dns_already_set
   handlers:
     - name: Restart network
       ansible.builtin.systemd_service:
