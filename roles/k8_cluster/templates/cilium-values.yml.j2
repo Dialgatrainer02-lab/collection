@@ -18,6 +18,6 @@ k8sClientRateLimit:
 {% if k8_cluster_ingress == 'cilium' %}
 ingressController:
   enabled: true
-  loadbalancerMode: dedicated
+  loadbalancerMode: shared
   default: true
 {% endif %}
