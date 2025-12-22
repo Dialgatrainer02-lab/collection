@@ -2,7 +2,7 @@ ansible
 argcomplete
 kubernetes
 jsonpatch
-
+hvac
 
 molecule
 molecule-plugins[vagrant]

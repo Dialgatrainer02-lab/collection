@@ -46,6 +46,12 @@
             flat: true
           run_once: true
 
+    - name: Install Gateway API CRDs
+      kubernetes.core.k8s:
+        state: present
+        src: https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.1.0/standard-install.yaml
+        kubeconfig: "/home/{{ ansible_user }}/.kube/config"
+
     - name: Cni specific steps
       ansible.builtin.import_tasks:
         file: cni/{{ k8_cluster_cni }}.yml
